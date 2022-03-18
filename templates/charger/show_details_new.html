@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Homepage</title>
+    <meta name="robots" content="index,follow" />
+    <link href="{% static 'form.css' %}" rel="stylesheet" media="screen">
+
+</head>
+
+<div class="form">
+    <div class="title">Success!</div>
+    <div class="subtitle">Payment was recieved</div>
+    <hr>
+    <div class="subtitle">Old Balance</div>
+    <div class="input-container ic1">
+        <input id="firstname" class="input" type="text" value="{{ balance_old }}" />
+    </div>
+    <hr>
+    <div class="subtitle">New Balance</div>
+    <div class="input-container ic1">
+        <input id="firstname" class="input" type="text" value="{{ balance_new }}" />
+    </div>
+    
+</div>

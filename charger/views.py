@@ -1,0 +1,83 @@
+from multiprocessing import context
+from django.shortcuts import render
+from .forms import MakePayment
+import requests
+import json
+from django.shortcuts import redirect
+import xrpl
+import time
+# Create your views here.
+
+address_charger = "rEVpYkfg2VSh4Tco6GN5uciWvdt6cusSkh"
+
+testnet_url = "https://s.altnet.rippletest.net:51234"
+client = xrpl.clients.JsonRpcClient(testnet_url)
+
+def create_payment(request):
+    if request.method == 'GET':
+        form = MakePayment()
+
+    elif request.method == 'POST':
+        form = MakePayment(request.POST)
+        if form.is_valid():
+            address = form.cleaned_data['address']
+            amount = form.cleaned_data['amount']
+
+            payment_object = {
+                "address" : address,
+                "amount" : amount
+            }
+
+            url_new = "https://api.npoint.io/67a6d648e336c1082719"
+
+            requests.post(url_new, data=json.dumps(payment_object))
+
+            request.session['url_new'] = url_new
+
+            balance_old = xrpl.account.get_balance(address_charger, client)
+
+            request.session['balance_old'] = balance_old
+
+            return redirect("charger:show_details")
+
+
+    context = {"form": form}
+    return render(request, "charger/create_payment.html", context)
+
+
+def show_details(request):
+    return render(request, "charger/show_details.html")
+    
+    
+
+
+def transactions(request):
+
+    info2 = xrpl.account.get_account_payment_transactions(address_charger, client)
+    info1 = xrpl.account.get_balance(address_charger, client)
+
+    context = {"transactions":info2, "balance": info1}
+    
+    return render(request, "charger/transactions.html", context)
+
+def new_details(request):
+    
+    info2 = xrpl.account.get_account_payment_transactions(address_charger, client)
+    info1 = xrpl.account.get_balance(address_charger, client)
+    
+    balance_old = xrpl.account.get_balance(address_charger, client)
+    balance_new = xrpl.account.get_balance(address_charger, client)
+    
+    timeout = time.time() + 1   # 5 minutes from now
+    while balance_old == balance_new:
+        balance_new = xrpl.account.get_balance(address_charger, client)
+        if balance_new != balance_old or time.time() > timeout:
+
+            request.session['balance_old'] = balance_old
+            request.session['balance_new'] = balance_new
+            
+            return redirect("charger:new_details")
+
+    context = {"transactions":info2, "balance": info1, "balance_old" : balance_old, "balance_new": balance_new}
+    
+    return render(request, "charger/show_details_new.html", context)

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Payment</title>
+    <meta name="robots" content="index,follow" />
+    <link href="{% static 'form.css' %}" rel="stylesheet" media="screen">
+
+</head>
+
+<div class="form">
+    <div class="title">Payment Details</div>
+    <form action="#" method="post" id="">
+        {% csrf_token %}
+
+        <div class="input-container ic1">
+            <div class="subtitle"><label for="id_address">Address to Send:</label></div><br>
+            <input class="input" type="text" name="address" id="id_address" value="{{ request.session.address }}">
+        </div>
+        <br>
+        <div class="input-container ic1">
+            <div class="subtitle"><label for="id_amount">Amount:</label></div><br>
+            <input class="input" type="text" name="amount" id="id_amount" value="{{ request.session.amount }}00000">
+        </div>
+        <br><br>
+        <span class="text-muted"></span>
+        <input name="action" class="input" value="send_data" type="hidden">
+        <button type="submit" class="submit"><span class="cta-btn-inner">
+                Make Payment
+            </span></button>
+    </form>
+</div>

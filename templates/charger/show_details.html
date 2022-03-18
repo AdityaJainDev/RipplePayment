@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Homepage</title>
+    <meta name="robots" content="index,follow" />
+    <link href="{% static 'form.css' %}" rel="stylesheet" media="screen">
+
+</head>
+
+<div class="form">
+    <div class="title">Success</div>
+    <div class="subtitle">Payment link was created</div>
+    <div class="input-container ic1">
+        <div class="subtitle">Link</div><br>
+        <input id="firstname" class="input" type="text" value="{{ request.session.url_new }}" />
+    </div>
+    <br><br><br>
+    <div class="subtitle">You can copy and paste this link</div>
+    <div class="subtitle">in the cars payment wallet to</div>
+    <div class="subtitle">proceed.</div>
+    <br>
+
+    <div class="subtitle">Current Balance</div>
+    <div class="input-container ic1">
+        <input id="firstname" class="input" type="text" value="{{ request.session.balance_old }}" />
+    </div>
+    
+</div>
+
+<script src="{% static 'app.js' %}" defer></script>

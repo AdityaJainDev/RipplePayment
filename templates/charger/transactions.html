@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Homepage</title>
+    <meta name="robots" content="index,follow" />
+    <link href="{% static 'form2.css' %}" rel="stylesheet" media="screen">
+
+</head>
+
+<div class="form">
+    <div class="title">Transaction Details</div><span style="text-align: right;"><div class="subtitle">Total Balance - {{balance}}</div></span>
+    <hr>
+    {% for x in transactions %}
+    <div class="subtitle">Account from - {{x.tx.Account}}</div>
+    <div class="subtitle">Amount Paid - {{x.tx.Amount}}</div>
+    <div class="subtitle">Sequence - {{x.tx.Sequence}}</div>
+    <hr>
+    {% endfor %}
+    <br><br><br>
+    
+</div>
