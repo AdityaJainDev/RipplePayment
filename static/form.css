@@ -10,9 +10,9 @@ body {
     background-color: #15172b;
     border-radius: 20px;
     box-sizing: border-box;
-    height: 550px;
-    padding: 20px;
-    width: 350px;
+    height: auto;
+    padding: 50px;
+    width: auto;
   }
   
   .title {

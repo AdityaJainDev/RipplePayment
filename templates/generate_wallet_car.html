@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>New Wallet</title>
+    <meta name="robots" content="index,follow" />
+    <link href="{% static 'form.css' %}" rel="stylesheet" media="screen">
+    <style>
+        a {
+            all: unset;
+        }
+    </style>
+
+</head>
+
+<div class="form">
+    <form action="#" method="post" id="">
+            {% csrf_token %}
+            <div class="title">New Wallet Generated</div>
+            <div class="subtitle"><label for="id_url">Your new wallet credentials are -</label></div>
+            <div class="input-container ic1">
+                <div class="subtitle"><label for="id_address">Address:</label></div><br>
+                <input class="input" type="text" name="address" id="id_address" value="{{ request.session.new_address_car }}">
+            </div>
+            <br><br>
+            <div class="input-container ic1">
+                <div class="subtitle"><label for="id_address">Sequence:</label></div><br>
+                <input class="input" type="text" name="address" id="id_address" value="{{ request.session.new_sequence }}">
+            </div>
+            <br><br>
+            <div class="input-container ic1">
+                <div class="subtitle"><label for="id_address">Sequence:</label></div><br>
+                <input class="input" type="text" name="address" id="id_address" value="{{ request.session.new_address_seed }}">
+            </div>
+            <br><br>
+            <div class="input-container ic1">
+                <div class="subtitle"><label for="id_address">Balance:</label></div><br>
+                <input class="input" type="text" name="address" id="id_address" value="{{ request.session.new_balance }}">
+            </div>
+            <br><br>
+            <button type="submit" class="submit"><span class="cta-btn-inner"><a href="{% url 'wallet:home' %}">
+                Make Payment
+            </a></span></button>
+    </form>
+</div>

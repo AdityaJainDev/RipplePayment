@@ -7,7 +7,16 @@ import json
 from django.shortcuts import redirect
 import xrpl
 import time
+import pyshorteners
 # Create your views here.
+
+# Generate Wallet
+##################################
+# from xrpl.wallet import generate_faucet_wallet, Wallet
+# test_wallet = generate_faucet_wallet(client, debug=True)
+# print(test_wallet)
+# print(test_wallet.seed, test_wallet.sequence)
+##################################
 
 address_charger = "rEVpYkfg2VSh4Tco6GN5uciWvdt6cusSkh"
 
@@ -36,7 +45,10 @@ def create_payment(request):
 
             requests.post(url_new, data=json.dumps(payment_object))
 
-            request.session['url_new'] = url_new
+            type_tiny = pyshorteners.Shortener()
+            short_url = type_tiny.tinyurl.short(url_new)
+
+            request.session['url_new'] = short_url.rsplit('/', 1)[1]
 
             balance_old = xrpl.account.get_balance(address_charger, client)
 
@@ -52,8 +64,6 @@ def create_payment(request):
 def show_details(request):
     return render(request, "charger/show_details.html")
     
-    
-
 
 def transactions(request):
 

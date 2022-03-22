@@ -17,3 +17,4 @@ typing-extensions==3.10.0.2
 urllib3==1.26.9
 websockets==10.2
 xrpl-py==1.4.0
+pyshorteners

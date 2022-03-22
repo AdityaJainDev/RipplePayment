@@ -12,17 +12,18 @@ from xrpl.ledger import get_latest_validated_ledger_sequence
 from xrpl.account import get_next_valid_seq_number
 from xrpl.wallet import Wallet
 
-
 # Create your views here.
 
-address_from = "rMePapujB6EfUrcgK8bUAdcyC4wRdyLNt"
+address_from = "r3YrQpHhvCviAxgzFKtqqBVNtXB3ecAb9Q"
+seed_1 = "sEd7g3sjDmyUisSoRER9cCj4WpzVsfC"
+seq_1 = 26299123
 
 testnet_url = "https://s.altnet.rippletest.net:51234"
 client = xrpl.clients.JsonRpcClient(testnet_url)
 
 def index(request):
 
-    if request.method == 'GET':
+    if request.method == 'GET':                    
         form = Details()
     
     elif request.method == 'POST':
@@ -30,11 +31,11 @@ def index(request):
         if form.is_valid():
             url = form.cleaned_data['url']
 
-            # a = requests.get("https://unshorten.me/s/" + url)
+            import requests
 
-            # print(a.text)
+            resp = requests.get("https://tinyurl.com/" + url)
 
-            data = requests.get(url)
+            data = requests.get(resp.url)
 
             address = data.json()["address"]
             amount = data.json()["amount"]
@@ -49,6 +50,24 @@ def index(request):
     return render(request, "base.html", context)
 
 
+def generate_wallet(request):
+    return render(request, "generate_wallet.html")
+
+def generate_wallet_car(request):
+
+    from xrpl.wallet import generate_faucet_wallet, Wallet
+    test_wallet = generate_faucet_wallet(client, debug=True)
+
+    info1 = xrpl.account.get_balance(test_wallet.classic_address, client)
+
+    request.session['new_address_car'] = test_wallet.classic_address
+    request.session['new_address_seed'] = test_wallet.seed
+    request.session['new_sequence'] = test_wallet.sequence
+    request.session['new_balance'] = info1
+
+    return render(request, "generate_wallet_car.html")
+
+
 def payment(request):
     if request.method == 'POST':
         form = PaymentDetail(request.POST)
@@ -56,14 +75,13 @@ def payment(request):
             address = form.cleaned_data['address']
             amount = form.cleaned_data['amount']
 
-            print(amount)
-
-            address_from = "rMePapujB6EfUrcgK8bUAdcyC4wRdyLNt"
-            seed_1 = "sEdTum5TAn6ZDYEmJMyuugL4NCXdKza"
-            seq_1 = 26106307
-
             testnet_url = "https://s.altnet.rippletest.net:51234"
             client = xrpl.clients.JsonRpcClient(testnet_url)
+
+            if request.session['address_seed'] != "":
+                seed_1 = request.session['new_address_seed']
+                seq_1 = request.session['new_sequence']
+                address_from = request.session['new_address_car']
 
             test_wallet = Wallet(seed_1, seq_1)
 
@@ -102,6 +120,9 @@ def success(request):
     return render(request, "success.html")
 
 def transactions(request):
+
+    if request.session['address_seed'] != "":
+        address_from = request.session['new_address_car']
     
     info2 = xrpl.account.get_account_payment_transactions(address_from, client)
     info1 = xrpl.account.get_balance(address_from, client)
