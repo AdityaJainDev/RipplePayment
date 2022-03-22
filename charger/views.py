@@ -1,4 +1,5 @@
 from multiprocessing import context
+from pprint import pprint
 from django.shortcuts import render
 from .forms import MakePayment
 import requests
@@ -23,6 +24,9 @@ def create_payment(request):
             address = form.cleaned_data['address']
             amount = form.cleaned_data['amount']
 
+            if address == "":
+                address = address_charger
+
             payment_object = {
                 "address" : address,
                 "amount" : amount
@@ -41,7 +45,7 @@ def create_payment(request):
             return redirect("charger:show_details")
 
 
-    context = {"form": form}
+    context = {"form": form, "address_charger": address_charger}
     return render(request, "charger/create_payment.html", context)
 
 
@@ -63,21 +67,20 @@ def transactions(request):
 def new_details(request):
     
     info2 = xrpl.account.get_account_payment_transactions(address_charger, client)
-    info1 = xrpl.account.get_balance(address_charger, client)
+
+    paid_amount = info2[0]["tx"]["Amount"]
+    account_from = info2[0]["tx"]["Account"]
     
-    balance_old = xrpl.account.get_balance(address_charger, client)
+    balance_old = request.session['balance_old']
     balance_new = xrpl.account.get_balance(address_charger, client)
     
     timeout = time.time() + 1   # 5 minutes from now
     while balance_old == balance_new:
         balance_new = xrpl.account.get_balance(address_charger, client)
         if balance_new != balance_old or time.time() > timeout:
-
-            request.session['balance_old'] = balance_old
-            request.session['balance_new'] = balance_new
             
             return redirect("charger:new_details")
 
-    context = {"transactions":info2, "balance": info1, "balance_old" : balance_old, "balance_new": balance_new}
+    context = {"transactions":info2, "amount_paid": paid_amount, "balance_old" : balance_old, "balance_new": balance_new, "account_from": account_from}
     
     return render(request, "charger/show_details_new.html", context)

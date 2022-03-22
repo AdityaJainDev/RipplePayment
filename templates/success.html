@@ -7,7 +7,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Payment</title>
+    <title>Success!</title>
     <meta name="robots" content="index,follow" />
     <link href="{% static 'form.css' %}" rel="stylesheet" media="screen">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/AcLSFNivGXo5DnoPqAdVxHB7qQrUvxjgXxmrGhEFH6v4" crossorigin="anonymous">
@@ -31,4 +31,6 @@
         <div class="subtitle">Amount Paid</div><br>
         <input id="email" class="input" type="text" value="{{ request.session.amount }}" disabled/>
     </div>
+    <hr><br><br>
+    <div class="subtitle"><a href="{{'/transactions'}}">View all Transactions</a></div>
 </div>

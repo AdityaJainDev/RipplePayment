@@ -18,10 +18,10 @@
         {% csrf_token %}
         <div class="title">Create Payment</div>
         <div class="input-container ic1">
-            <div class="subtitle"><label for="id_url">Please enter the account to recieve payment</label></div><br>
-            <input class="input" type="text" name="address" id="id_address">
+            <div class="subtitle"><label for="id_url">Please enter the account to recieve payment in (Leave Blank for default address)</label></div><br>
+            <input class="input" type="text" name="address" id="id_address" placeholder="{{address_charger}}">
         </div>
-        <br><br>
+        <br><br><br><br>
         <div class="input-container ic1">
             <div class="subtitle"><label for="id_url">Please enter the amount to be recieved</label></div><br>
             <input class="input" type="text" name="amount" id="id_amount">

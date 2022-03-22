@@ -7,7 +7,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Homepage</title>
+    <title>Success!</title>
     <meta name="robots" content="index,follow" />
     <link href="{% static 'form.css' %}" rel="stylesheet" media="screen">
 
@@ -15,16 +15,20 @@
 
 <div class="form">
     <div class="title">Success!</div>
-    <div class="subtitle">Payment was recieved</div>
+    <div class="subtitle">Payment was recieved from {{ account_from }}</div>
     <hr>
     <div class="subtitle">Old Balance</div>
     <div class="input-container ic1">
         <input id="firstname" class="input" type="text" value="{{ balance_old }}" />
     </div>
-    <hr>
     <div class="subtitle">New Balance</div>
     <div class="input-container ic1">
         <input id="firstname" class="input" type="text" value="{{ balance_new }}" />
     </div>
-    
+    <div class="subtitle">Amount Paid</div>
+    <div class="input-container ic1">
+        <input id="firstname" class="input" type="text" value="{{ amount_paid }}" />
+    </div><br>
+    <div class="subtitle"><a href="{{'/charger/transactions'}}">View all Transactions</a></div>
+
 </div>

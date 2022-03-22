@@ -15,6 +15,11 @@ from xrpl.wallet import Wallet
 
 # Create your views here.
 
+address_from = "rMePapujB6EfUrcgK8bUAdcyC4wRdyLNt"
+
+testnet_url = "https://s.altnet.rippletest.net:51234"
+client = xrpl.clients.JsonRpcClient(testnet_url)
+
 def index(request):
 
     if request.method == 'GET':
@@ -95,3 +100,12 @@ def payment(request):
 
 def success(request):
     return render(request, "success.html")
+
+def transactions(request):
+    
+    info2 = xrpl.account.get_account_payment_transactions(address_from, client)
+    info1 = xrpl.account.get_balance(address_from, client)
+
+    context = {"transactions":info2, "balance": info1}
+    
+    return render(request, "transactions.html", context)
