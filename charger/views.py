@@ -77,9 +77,6 @@ def transactions(request):
 def new_details(request):
     
     info2 = xrpl.account.get_account_payment_transactions(address_charger, client)
-
-    paid_amount = info2[0]["tx"]["Amount"]
-    account_from = info2[0]["tx"]["Account"]
     
     balance_old = request.session['balance_old']
     balance_new = xrpl.account.get_balance(address_charger, client)
@@ -90,6 +87,9 @@ def new_details(request):
         if balance_new != balance_old or time.time() > timeout:
             
             return redirect("charger:new_details")
+
+    paid_amount = info2[0]["tx"]["Amount"]
+    account_from = info2[0]["tx"]["Account"]
 
     context = {"transactions":info2, "amount_paid": paid_amount, "balance_old" : balance_old, "balance_new": balance_new, "account_from": account_from}
     

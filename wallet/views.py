@@ -78,7 +78,7 @@ def payment(request):
             testnet_url = "https://s.altnet.rippletest.net:51234"
             client = xrpl.clients.JsonRpcClient(testnet_url)
 
-            if request.session['address_seed'] != "":
+            if request.session['new_address_seed'] != "":
                 seed_1 = request.session['new_address_seed']
                 seq_1 = request.session['new_sequence']
                 address_from = request.session['new_address_car']
@@ -121,7 +121,7 @@ def success(request):
 
 def transactions(request):
 
-    if request.session['address_seed'] != "":
+    if request.session['new_address_seed'] != "":
         address_from = request.session['new_address_car']
     
     info2 = xrpl.account.get_account_payment_transactions(address_from, client)
